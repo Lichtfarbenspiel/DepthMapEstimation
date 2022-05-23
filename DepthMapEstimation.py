@@ -118,11 +118,12 @@ disparities = []
 
 for imageFilename in imageFilenames:
     image = cv2.imread(imageFilename, 0)
-    image = cv2.resize(image, (0, 0), fx=0.5, fy=0.5)
+    image = cv2.resize(image, (0, 0), fx=0.1, fy=0.1)
 
     images.append(image)
 
-img1 = images[0]
+# left image
+img1 = images[0] 
 
 for index in range(len(imageFilenames) - 1):
     index += 1

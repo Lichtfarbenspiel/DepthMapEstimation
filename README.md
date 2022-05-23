@@ -17,7 +17,7 @@
 
 Das Programm muss lediglich gestartet werden und beginnt damit, immer abwechselnd die zu Vergleichenden Bilder, die Feature Points, die Matches der Feature Points,die  Epipolarlinien, die rektifizierten Bilder und die Disparitätskarte anzuzeigen. 
 
-Zum Start des Programms werden alle zu verwendenden Bilder in ein Array geladen. Dabei dient das Bild im ersten Eintrag als Referenz, mit welcher die übrigen Bilder im Array paarweise nacheinander verarbeitet werden. 
+Zum Start des Programms werden alle zu verwendenden Bilder in ein Array geladen. Dabei dient das Bild im ersten Eintrag als Referenz ("img1" im Programm), mit welcher die übrigen Bilder im Array paarweise nacheinander verarbeitet werden. 
 Hierbei werden zunächst in jedem Bild, der jeweiligen Bildpaare, die Feature-Punkte ermittelt. Diese werden anschließend, den entsprechenden Punkten im jeweils anderen Bild, gepaart. Daraufhin wird die Fundamentalmatrix, sowie eine Maske der gepaarten Punkte ermittelt. Anschließend werden mit Hilfe dieser Punkte die Epipolarlinien bzw. die beiden Epipole berechnet. 	
 Mit Hilfe der Fundamentalmatrix werden dann die jeweiligen Bildpaare rektifiziert und anschließend wird die Disparität berechnet. Zuletzt werden die einzelnen Disparitäten, der zuvor verarbeiteten Bildpaare, addiert und die gemittelte Tiefenkarte errechnet.
 
