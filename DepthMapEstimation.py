@@ -103,42 +103,13 @@ def computeDisparity(img1, img2):
     disparity = stereo.compute(img1, img2)
     return disparity
 
-def computeMeanDepth(disparities):
-    h, w = disparities[0].shape
-    f = 37
-    allPoints = []
-    depth = np.array(disparities[0].shape, np.float32)
-
-    for disparity in disparities:
-        points = np.zeros((h, w, 3), np.float32)
-        for v in range(h):
-            for u in range(w):
-                points[v, u, 0] = u / disparity[v, u]
-                points[v, u, 1] = v / disparity[v, u]
-                points[v, u, 2] = f / disparity[v, u]
-
-        allPoints.append(points)
-
-    for i in range(1, len(allPoints)):           
-        for v1 in range(h): 
-            for u1 in range(w):
-                nearPointsZ = []
-                for v2 in range(h): 
-                    for u2 in range(w):
-                        if np.linalg.norm(allPoints[0][v1, u1] - allPoints[i][v2, u2]) < 0.1:
-                            nearPointsZ.append(allPoints[i][v2, u2, 2])
-                            
-                depth[v1, u1] = sum(sum(nearPointsZ), allPoints[0][v1, u1, 2]) / (1 + len(nearPointsZ))
-    
-    return depth
-
                             
 
 # -------------------------- #
 
 
 # load images
-imageFilenames = glob.glob("./images/IMG_*.jpg")
+imageFilenames = glob.glob("./images/coffeset??.jpeg")
 
 images = []
 disparities = []
@@ -146,7 +117,7 @@ disparities = []
 
 for imageFilename in imageFilenames:
     image = cv2.imread(imageFilename, 0)
-    image = cv2.resize(image, (0, 0), fx=0.1, fy=0.1)
+    image = cv2.resize(image, (0, 0), fx=0.5, fy=0.5)
     
     images.append(image)
 
@@ -180,7 +151,7 @@ for index in range(len(imageFilenames) - 1):
     img5, img6 = computeEpilines(img1 = img1, img2 = img2, pts1 = pts1, pts2 = pts2, ptsToReshape = pts2)
     img3, img4 = computeEpilines(img1 = img2, img2 = img1, pts1 = pts2, pts2 = pts1, ptsToReshape = pts1)
 
-    cv2.imshow(title, np.concatenate((img3, img5), axis=1))
+    cv2.imshow(title, np.concatenate((img5, img3), axis=1))
     cv2.waitKey(0)
 
     # Stereo rectification
@@ -198,6 +169,7 @@ for index in range(len(imageFilenames) - 1):
 
     # generate depth map
     disparity = computeDisparity(img1_rect, img2_rect)
+    disparity = cv2.warpPerspective(disparity, M = np.linalg.inv(H1), dsize = (w1, h1))
     
     disparities.append(disparity)
     print(len(disparities))
@@ -206,23 +178,22 @@ for index in range(len(imageFilenames) - 1):
     disparityDisplay = np.copy(disparity)
     disparityDisplay = cv2.normalize(src = disparityDisplay, dst = disparityDisplay, alpha = 255, beta = 0, norm_type = cv2.NORM_MINMAX)
     disparityDisplay = np.uint8(disparityDisplay)
-
-    # plt.imshow(disparityDisplay, cmap='plasma')
-    # plt.colorbar()
-    # plt.show()
-
     cv2.imshow(title, disparityDisplay)
     cv2.waitKey(0)
 
     print("Image pair", index)
 
 # combine depth maps
-meanDepth = computeMeanDepth(disparities)
+meanDepth = np.zeros(disparities[0].shape, np.float32)
+for disparity in disparities:
+    meanDepth = meanDepth + disparity
+for v in meanDepth:
+    for u in v:
+        u = 1 / u
 # normalise Values
-meanDepthDisplay = np.zeros(meanDepth.shape, np.uint8)
-meanDepthDisplay = cv2.normalize(src = meanDepth, dst = meanDepthDisplay, alpha = 255, beta = 0, norm_type = cv2.NORM_MINMAX)
-
-cv2.imshow(title, meanDepthDisplay)
+meanDepth = cv2.normalize(src = meanDepth, dst = meanDepth, alpha = 0, beta = 255, norm_type = cv2.NORM_MINMAX)
+meanDepth = np.uint8(meanDepth)
+cv2.imshow(title, meanDepth)
 cv2.waitKey(0)
 
 cv2.destroyAllWindows()
