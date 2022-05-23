@@ -109,7 +109,7 @@ def computeDisparity(img1, img2):
 
 
 # load images
-imageFilenames = glob.glob("./images/coffeset??.jpeg")
+imageFilenames = glob.glob("./images/IMG_*.jpg")
 
 images = []
 disparities = []
