@@ -15,8 +15,7 @@
 # Anleitung zur Nutzung des Programms 
 [Zum Programm "DepthMapEstimation"](DepthMapEstimation.py)
 
-
-
+Das Programm beginnt damit immer abwechselnd die zu Vergleichenden Bilder, Feature Points, Matches, Epipolarlinien, rectifizierten Bilder und die Disparitätskarte anzuzeigen. Das ganze geschieht für alle Kombinationen aus dem ersten Bild und einem der anderen angelegten Bilder (im Ordner Data). Nachdem entsprechend alle Bilder durchlaufen wurden, wird die gemittelte Tiefenkarte aus allen Disparitätskarten berechnet und dargestellt.
 
 # Referenzen
 [Depth Map from Stereo Images OpenCv](https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html)
