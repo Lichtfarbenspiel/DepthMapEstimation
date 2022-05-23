@@ -15,10 +15,16 @@
 # Anleitung zur Nutzung des Programms 
 [Zum Programm "DepthMapEstimation"](DepthMapEstimation.py)
 
-Das Programm beginnt damit immer abwechselnd die zu Vergleichenden Bilder, Feature Points, Matches, Epipolarlinien, rectifizierten Bilder und die Disparitätskarte anzuzeigen. Das ganze geschieht für alle Kombinationen aus dem ersten Bild und einem der anderen angelegten Bilder (im Ordner Data). Nachdem entsprechend alle Bilder durchlaufen wurden, wird die gemittelte Tiefenkarte aus allen Disparitätskarten berechnet und dargestellt.
+Das Programm muss lediglich gestartet werden und beginnt damit, immer abwechselnd die zu Vergleichenden Bilder, die Feature Points, die Matches der Feature Points,die  Epipolarlinien, die rektifizierten Bilder und die Disparitätskarte anzuzeigen. 
+
+Zum Start des Programms werden alle zu verwendenden Bilder in ein Array geladen. Dabei dient das Bild im ersten Eintrag als Referenz, mit welcher die übrigen Bilder im Array paarweise nacheinander verarbeitet werden. 
+Hierbei werden zunächst in jedem Bild, der jeweiligen Bildpaare, die Feature-Punkte ermittelt. Diese werden anschließend, den entsprechenden Punkten im jeweils anderen Bild, gepaart. Daraufhin wird die Fundamentalmatrix, sowie eine Maske der gepaarten Punkte ermittelt. Anschließend werden mit Hilfe dieser Punkte die Epipolarlinien bzw. die beiden Epipole berechnet. 	
+Mit Hilfe der Fundamentalmatrix werden dann die jeweiligen Bildpaare rektifiziert und anschließend wird die Disparität berechnet. Zuletzt werden die einzelnen Disparitäten, der zuvor verarbeiteten Bildpaare, addiert und die gemittelte Tiefenkarte errechnet.
+
 
 # Referenzen
 [Depth Map from Stereo Images OpenCv](https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html)
+
 [Easily Create a Depth Map with Smartphone AR (Part 1 - 4)](https://www.andreasjakl.com/easily-create-depth-maps-with-smartphone-ar-part-1/)
 
 # Verwendete Module
